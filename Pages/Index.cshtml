@@ -1,0 +1,72 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <div class="fb-like"
+         data-share="true"
+         data-width="450"
+         data-show-faces="true">
+    </div>
+    <fb:login-button scope="public_profile,email"
+                     onlogin="checkLoginState();">
+    </fb:login-button>
+    <input type="button" id="logout" onclick="Logout()" value="logout" />
+    <div id="status"></div>
+
+</div>
+<script>
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: 'YourID',
+            xfbml: true,
+            version: 'v9.0'
+        });
+        FB.AppEvents.logPageView();
+        checkLoginState();
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            console.log('status: ' + response)
+            if (response.status === 'connected') {   
+                getUserInfomation();
+            } else {                                 
+                document.getElementById('status').innerHTML = 'Please log into this webpage.';
+            }
+        });
+    }
+
+    function getUserInfomation() {                      
+        FB.api('/me', function (response) {
+            console.log(response)
+            var name = ' Name :' + response.name + ' <br> ';
+            var email = ' Email :' + response.email + '';
+            document.getElementById('status').innerHTML = name + email;
+        }, { fields: 'email,name' });
+    }
+
+    function Logout() {
+        FB.logout(function (response) {
+            if (response.status === 'unknown') {
+                document.getElementById('status').innerHTML = 'you have logout';
+            }
+        });
+    }
+
+</script>
