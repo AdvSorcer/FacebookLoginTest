@@ -16,15 +16,18 @@
     <fb:login-button scope="public_profile,email"
                      onlogin="checkLoginState();">
     </fb:login-button>
+    <div class="fb-login-button" data-size="medium" data-button-type="continue_with" data-layout="default" data-auto-logout-link="true" data-use-continue-as="false" data-width=""></div>
     <input type="button" id="logout" onclick="Logout()" value="logout" />
     <div id="status"></div>
 
 </div>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v9.0&appId=850596445766777&autoLogAppEvents=1" nonce="2lzfv2Fd"></script>
 <script>
 
     window.fbAsyncInit = function () {
         FB.init({
-            appId: 'YourID',
+            appId: '850596445766777',
             xfbml: true,
             version: 'v9.0'
         });
@@ -44,15 +47,15 @@
     function checkLoginState() {
         FB.getLoginStatus(function (response) {
             console.log('status: ' + response)
-            if (response.status === 'connected') {   
+            if (response.status === 'connected') {
                 getUserInfomation();
-            } else {                                 
+            } else {
                 document.getElementById('status').innerHTML = 'Please log into this webpage.';
             }
         });
     }
 
-    function getUserInfomation() {                      
+    function getUserInfomation() {
         FB.api('/me', function (response) {
             console.log(response)
             var name = ' Name :' + response.name + ' <br> ';
